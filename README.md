@@ -1,6 +1,7 @@
 # union.py
 
-A python library for Kromatic's Union chatservice
+A python library for Kromatic's Union chatservice.
+Current version: 0.0.3
 
 ## Installation
 
