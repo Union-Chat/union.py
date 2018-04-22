@@ -3,7 +3,7 @@ import json
 import base64
 import asyncio
 from pyee import EventEmitter
-
+from collections import OrderedDict
 
 class SelfUser:
     def __init__(self, username, password):
@@ -17,8 +17,6 @@ class Server:
         self.id = data['id']
         self.messages = []
 
-    #async def createMessage(self, message):
-
 class Message:
     def __init__(self, client, msg):
         self.client = client
@@ -31,16 +29,17 @@ class Message:
             self.self = self.author
 
     async def reply(self, content):
-        await self.client.createMessage(self.server.id, content)
+        message = await self.client.create_message(self.server.id, content)
+        return message
 
     async def delete(self):
         if self.author != self.client.user.username:
             raise CannotDeleteOtherMessages('You can not delete a message that was not sent by you!')
-        await self.client.deleteMessage(self.id)
+        await self.client.delete_message(self.id)
 
 
 class Client:
-    def __init__(self, username, password):
+    def __init__(self, username, password, **kwargs):
         if not username:
             raise UsernameMustExist('options.username must exist and may not be null')
         if not password:
@@ -49,7 +48,11 @@ class Client:
         self.ready = False
         self.servers = {}
         self._ws = None
-        self.ee = EventEmitter()
+        self.event = EventEmitter()
+        self.message_cache = OrderedDict()
+        self.cache_size = kwargs.get('cache_size')
+        if self.cache_size is None or self.cache_size < 100:
+            self.cache_size = 500
 
     async def _connect(self):
         if self._ws:
@@ -65,23 +68,33 @@ class Client:
                 #TODO: Implement reconnecting or shit
                 pass
 
-
-
     def start(self):
         self.loop = asyncio.get_event_loop()
         self.loop.run_until_complete(self._connect())
 
-    async def createMessage(self, server, content):
+    async def create_message(self, server, content):
         if not self.ready:
             raise NotReadyYet('Client is not ready yet!')
         payload = json.dumps({'op': 8, 'd': {'server': server, 'content': content}})
         await self._ws.send(payload)
+        await asyncio.sleep(1)
+        messages = list(self.message_cache.items())
+        for k in messages[-1]:
+            return self.message_cache[k]
 
-    async def deleteMessage(self, id):
+    async def delete_message(self, id):
         if not self.ready:
             raise NotReadyYet('Client is not ready yet!')
         payload = json.dumps({'op': 10, 'd': id})
         await self._ws.send(payload)
+
+    def get_message(self, id):
+        if not self.ready:
+            raise NotReadyYet('Client is not ready yet!')
+        try:
+            return self.message_cache[id]
+        except KeyError:
+            return
 
     def _handlePayload(self, payload):
         payload = json.loads(payload)
@@ -89,22 +102,27 @@ class Client:
             self.ready = True
             for server in payload['d']:
                 self.servers[server['id']] = Server(server)
-            self.ee.emit('ready')
+            self.event.emit('ready')
         if payload['op'] == 3:
             message = Message(self, payload['d'])
+            if len(self.message_cache) > self.cache_size:
+                for k in sorted(self.message_cache.keys()):
+                    self.message_cache.pop(k)
+                    break
             self.servers[payload['d']['server']].messages.append(message)
-            self.ee.emit('message', message)
+            self.message_cache[payload['d']['id']] = Message(self, payload['d'])
+            self.event.emit('message', message)
         if payload['op'] == 6:
-            self.ee.emit('message_delete', payload['d'])
+            message = self.message_cache[payload['d']]
+            self.event.emit('message_delete', message)
         if payload['op'] == 11:
-            self.ee.emit('bad_request', payload['d'])
+            self.event.emit('bad_request', payload['d'])
         if payload['op'] == 5:
-            self.ee.emit('member_join', payload['d'])
+            self.event.emit('member_join', payload['d'])
         if payload['op'] == 4:
             id = payload['d']['id']
             status = payload['d']['status']
-            self.ee.emit('presence_change', id, status)
-
+            self.event.emit('presence_change', id, status)
 
 
 class CannotDeleteOtherMessages(Exception):
@@ -120,6 +138,7 @@ class UsernameMustExist(Exception):
 class PasswordMustExist(Exception):
     def __init__(self, message):
         self.message = message
+
 
 class NotReadyYet(Exception):
     def __init__(self, message):
