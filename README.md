@@ -28,3 +28,18 @@ async def ready():
     
 client.start()
 ```
+
+## Events
+
+Capturing events
+
+Use the @client.ee.on() decorator
+
+Types:
+
+* 'message', emitted when a new message is sent
+* 'ready', emitted when the client has connected
+* 'bad_request', emitted when there was a server side error processing the request
+* 'presence_change', emitted when someone goes online or offline
+* 'message_delete', emitted when a message is deleted
+* 'member_join', emitted when a member is added or removed (I think, I haven't had the chance to test yet)
