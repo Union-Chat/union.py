@@ -1,7 +1,7 @@
 # union.py
 
 A python library for Kromatic's Union chatservice.
-Current version: 0.0.3
+Current version: 0.0.7
 
 ## Installation
 
@@ -15,9 +15,9 @@ Current version: 0.0.3
 ## Example
 
 ```python
-import union
+import unionchat
 
-client = union.Client(username='Test', password = 'Test')
+client = unionchat.Client(username='Test', password = 'Test')
 
 @client.event.on('ready')
 async def ready():
