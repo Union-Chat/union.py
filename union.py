@@ -5,6 +5,7 @@ import asyncio
 from pyee import EventEmitter
 from collections import OrderedDict
 
+
 class SelfUser:
     def __init__(self, username, password):
         self.username = username
@@ -16,6 +17,7 @@ class Server:
         self.name = data['name']
         self.id = data['id']
         self.messages = []
+
 
 class Message:
     def __init__(self, client, msg):
@@ -51,8 +53,8 @@ class Client:
         self.event = EventEmitter()
         self.message_cache = OrderedDict()
         self.cache_size = kwargs.get('cache_size')
-        if self.cache_size is None or self.cache_size < 100:
-            self.cache_size = 500
+        #if self.cache_size is None or self.cache_size < 100:
+            #self.cache_size = 500
 
     async def _connect(self):
         if self._ws:
@@ -106,9 +108,8 @@ class Client:
         if payload['op'] == 3:
             message = Message(self, payload['d'])
             if len(self.message_cache) > self.cache_size:
-                for k in sorted(self.message_cache.keys()):
-                    self.message_cache.pop(k)
-                    break
+                messages = list(self.message_cache.keys())
+                self.message_cache.pop(messages[1])
             self.servers[payload['d']['server']].messages.append(message)
             self.message_cache[payload['d']['id']] = Message(self, payload['d'])
             self.event.emit('message', message)
