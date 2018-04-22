@@ -2,12 +2,13 @@
 
 A python library for Kromatic's Union chatservice
 
+## Installation
+
+`pip3 install unionchat`
+
 ## Requirements
 
 * websockets
-* json
-* base64
-* asyncio
 * pyee
 
 ## Example
@@ -17,11 +18,11 @@ import union
 
 client = union.Client(username='Test', password = 'Test')
 
-@client.ee.on('ready')
+@client.event.on('ready')
 async def ready():
   print('Union client loaded')
   
- @client.ee.on('message')
+ @client.event.on('message')
  async def on_message(msg):
   if msg.content.lower() == '!hi':
     await msg.reply('Oh hi there {}'.format(msg.author))
@@ -33,7 +34,7 @@ client.start()
 
 Capturing events
 
-Use the @client.ee.on() decorator
+Use the @client.event.on() decorator
 
 Types:
 
@@ -43,3 +44,15 @@ Types:
 * 'presence_change', emitted when someone goes online or offline
 * 'message_delete', emitted when a message is deleted
 * 'member_join', emitted when a member is added or removed (I think, I haven't had the chance to test yet)
+
+## Functions
+
+```python
+await create_message(server, content) # Makes a new message, returns Message object
+get_message(id) # Get a message by ID
+await delete_message(id) # Delete a message by ID, only works on your own messages
+
+# Message() methods
+await reply(content) # Replies to a message, return Message object
+await delete() # Deletes message, only works on your own messages
+
