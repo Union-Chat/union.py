@@ -72,6 +72,8 @@ Union Objects
 
 Member
 ******
+.. py:class:: unionchat.Member()
+
 Represents a Union member. You normally don't have to create one of these yourself.
 Members don't have ID's, their names are used internally.
 
@@ -95,6 +97,8 @@ str - Returns a preformatted mention
 
 Message
 *******
+.. py:class:: unionchat.Message()
+
 Represents a Union message. You normally don't have to create one of these yourself.
 
 .. py:attribute:: client
@@ -139,7 +143,7 @@ Returns Message of the message that was sent
 
 Alias of reply(content)
 
-.. py:function:: coroutine delete()
+.. py:cofunction:: coroutine delete()
 
 Deletes the message.
 
@@ -147,6 +151,7 @@ You cannot delete messages sent by others
 
 Server
 ******
+.. py:class:: unionchat.Server()
 Represents a Union server
 
 .. py:attribute:: name
@@ -175,6 +180,8 @@ Get a member by ID
 
 SelfUser
 ********
+.. py:class:: unionchat.SelfUser()
+
 Denotes the client user properties
 
 .. py:attribute:: password
