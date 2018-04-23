@@ -32,36 +32,8 @@ async def ready():
 client.start()
 ```
 
-## Events
+## Documentation
 
-Capturing events
-
-Use the @client.event.on() decorator
-
-Types:
-
-* 'message', emitted when a new message is sent
-* 'ready', emitted when the client has connected
-* 'bad_request', emitted when there was a server side error processing the request
-* 'presence_change', emitted when someone goes online or offline
-* 'message_delete', emitted when a message is deleted
-* 'member_join', emitted when a member is added or removed (I think, I haven't had the chance to test yet)
-
-## Functions
-
-```python
-# Client methods
-await create_message(server, content) # Makes a new message, returns Message object
-get_message(id) # Get a message by ID
-await delete_message(id) # Delete a message by ID, only works on your own messages
-get_member_info(server, id) # Get a member by server and ID
-
-# Message methods
-await reply(content) # Replies to a message, return Message object, shorthand for create_message()
-await delete() # Deletes message, only works on your own messages
-await send(content) # Alias of reply
-
-# Server methods
-get_member(id) # Gets a member from a server
+Find it [here](http://unionchat.readthedocs.io/en/latest/reference.html)
 
 
