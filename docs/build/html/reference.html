@@ -1,0 +1,385 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Reference &#8212; unionchat 0.0.8 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to unionchat’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="reference">
+<h1>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h1>
+<p>This explains how to use unionchat</p>
+<div class="section" id="client">
+<h2>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="unionchat.Client">
+<em class="property">class </em><code class="descclassname">unionchat.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>username</em>, <em>password</em>, <em>**</em><span class="sig-paren">)</span><a class="headerlink" href="#unionchat.Client" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Instances a client to connect to Union.
+You can pass some options to Client.</p>
+<p><strong>Parameters</strong></p>
+<ul class="simple">
+<li>loop(Optional) - Pass an asyncio event loop</li>
+<li>cache_size(Optional[int]) - The maximum number of messages to store in the message cache. This defaults to 500. Anything lower than 100 will use the default value.</li>
+</ul>
+<dl class="attribute">
+<dt id="user">
+<code class="descname">user</code><a class="headerlink" href="#user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Object[SelfUser] - Simple user that contains password and username</p>
+<dl class="attribute">
+<dt id="ready">
+<code class="descname">ready</code><a class="headerlink" href="#ready" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Bool: Indicates whether client has finished connecting or not.</p>
+<dl class="attribute">
+<dt id="loop">
+<code class="descname">loop</code><a class="headerlink" href="#loop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The event loop for the websocket and HTTP requests</p>
+<dl class="attribute">
+<dt id="servers">
+<code class="descname">servers</code><a class="headerlink" href="#servers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Dict[Server] - The servers that the client can see.</p>
+<dl class="attribute">
+<dt id="api">
+<code class="descname">api</code><a class="headerlink" href="#api" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>An instance of aiohttp ClientSession</p>
+<dl class="function">
+<dt id="start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Blocking call that runs the event loop so you don’t have to create it yourself.</p>
+<p>This function must always be called last.</p>
+<dl class="function">
+<dt>
+<code class="descname">coroutine create_message(server, content)</code></dt>
+<dd></dd></dl>
+
+<p>This function is a coroutine</p>
+<p>Sends a message to a Union server</p>
+<dl class="function">
+<dt>
+<code class="descname">coroutine send_message(server, content)</code></dt>
+<dd></dd></dl>
+
+<p>This function is a coroutine</p>
+<p>This is an alias of create_message(server, content)</p>
+<dl class="function">
+<dt>
+<code class="descname">coroutine delete_message(id)</code></dt>
+<dd></dd></dl>
+
+<p>Deletes a message</p>
+<p>You cannot delete messages send by others</p>
+<dl class="function">
+<dt id="get_message">
+<code class="descname">get_message</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#get_message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Returns a Message</p>
+<dl class="function">
+<dt id="get_member_info">
+<code class="descname">get_member_info</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#get_member_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Returns a Member</p>
+</div>
+<div class="section" id="union-objects">
+<h2>Union Objects<a class="headerlink" href="#union-objects" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="member">
+<h3>Member<a class="headerlink" href="#member" title="Permalink to this headline">¶</a></h3>
+<p>Represents a Union member. You normally don’t have to create one of these yourself.
+Members don’t have ID’s, their names are used internally.</p>
+<dl class="attribute">
+<dt id="avatar_url">
+<code class="descname">avatar_url</code><a class="headerlink" href="#avatar_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>str - Returns the avatar url of the member</p>
+<dl class="attribute">
+<dt id="created_at">
+<code class="descname">created_at</code><a class="headerlink" href="#created_at" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>timestamp - Returns the creation data of the member</p>
+<dl class="attribute">
+<dt id="status">
+<code class="descname">status</code><a class="headerlink" href="#status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>bool - Indicates whether a member is online or offline</p>
+<dl class="function">
+<dt id="str">
+<code class="descname">str</code><span class="sig-paren">(</span><em>member</em><span class="sig-paren">)</span><a class="headerlink" href="#str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Returns the member’s name</p>
+<dl class="function">
+<dt id="mention">
+<code class="descname">mention</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mention" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>str - Returns a preformatted mention</p>
+</div>
+<div class="section" id="message">
+<h3>Message<a class="headerlink" href="#message" title="Permalink to this headline">¶</a></h3>
+<p>Represents a Union message. You normally don’t have to create one of these yourself.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">client</code></dt>
+<dd></dd></dl>
+
+<p>The client used, you usually don’t use this.</p>
+<dl class="attribute">
+<dt id="server">
+<code class="descname">server</code><a class="headerlink" href="#server" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>int - The server the message originates from.</p>
+<dl class="attribute">
+<dt id="author">
+<code class="descname">author</code><a class="headerlink" href="#author" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Object[Member] - Returns a member of the message author.</p>
+<dl class="attribute">
+<dt id="content">
+<code class="descname">content</code><a class="headerlink" href="#content" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>str - Returns the message content.</p>
+<dl class="attribute">
+<dt id="id">
+<code class="descname">id</code><a class="headerlink" href="#id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>str - Returns the message id</p>
+<dl class="attribute">
+<dt>
+<code class="descname">created_at</code></dt>
+<dd></dd></dl>
+
+<p>int - Unix timestamp from when the message was created</p>
+<dl class="attribute">
+<dt id="self">
+<code class="descname">self</code><a class="headerlink" href="#self" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Object[Member] - Only available when the client sent the message</p>
+<dl class="function">
+<dt>
+<code class="descname">str</code><span class="sig-paren">(</span><em>Message</em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+
+<p>str - Returns message content</p>
+<dl class="function">
+<dt>
+<code class="descname">coroutine reply(content)</code></dt>
+<dd></dd></dl>
+
+<p>Replies to a message</p>
+<p>Returns Message of the message that was sent</p>
+<dl class="function">
+<dt>
+<code class="descname">coroutine send(content)</code></dt>
+<dd></dd></dl>
+
+<p>Alias of reply(content)</p>
+<dl class="function">
+<dt>
+<code class="descname">coroutine delete()</code></dt>
+<dd></dd></dl>
+
+<p>Deletes the message.</p>
+<p>You cannot delete messages sent by others</p>
+</div>
+<div class="section" id="id1">
+<h3>Server<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Represents a Union server</p>
+<dl class="attribute">
+<dt id="name">
+<code class="descname">name</code><a class="headerlink" href="#name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>str - Returns the server name</p>
+<dl class="attribute">
+<dt>
+<code class="descname">id</code></dt>
+<dd></dd></dl>
+
+<p>int - Returns the server ID</p>
+<dl class="attribute">
+<dt id="messages">
+<code class="descname">messages</code><a class="headerlink" href="#messages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>list - Returns the messages in the server by id</p>
+<dl class="attribute">
+<dt id="icon_url">
+<code class="descname">icon_url</code><a class="headerlink" href="#icon_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>str - Returns the server’s icon url</p>
+<dl class="attribute">
+<dt id="members">
+<code class="descname">members</code><a class="headerlink" href="#members" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>dict - Returns the members in the server</p>
+<dl class="method">
+<dt id="get_member">
+<code class="descname">get_member</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#get_member" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Get a member by ID</p>
+</div>
+<div class="section" id="selfuser">
+<h3>SelfUser<a class="headerlink" href="#selfuser" title="Permalink to this headline">¶</a></h3>
+<p>Denotes the client user properties</p>
+<dl class="attribute">
+<dt id="password">
+<code class="descname">password</code><a class="headerlink" href="#password" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Returns the password used to login</p>
+<p><strong>YOU SHOULD ALWAYS KEEP THIS PRIVATE</strong></p>
+<dl class="attribute">
+<dt id="username">
+<code class="descname">username</code><a class="headerlink" href="#username" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Returns the username used to login</p>
+</div>
+</div>
+<div class="section" id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="CannotDeleteOtherMessages">
+<em class="property">exception </em><code class="descname">CannotDeleteOtherMessages</code><a class="headerlink" href="#CannotDeleteOtherMessages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Raised when you attempt to delete a message that was not send by you</p>
+<dl class="exception">
+<dt id="UsernameMustExist">
+<em class="property">exception </em><code class="descname">UsernameMustExist</code><a class="headerlink" href="#UsernameMustExist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Raised when you do not include a username when creating a Client.</p>
+<dl class="exception">
+<dt id="PasswordMustExist">
+<em class="property">exception </em><code class="descname">PasswordMustExist</code><a class="headerlink" href="#PasswordMustExist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Raised when you do not include a password when creating a Client.</p>
+<dl class="exception">
+<dt id="NotReadyYet">
+<em class="property">exception </em><code class="descname">NotReadyYet</code><a class="headerlink" href="#NotReadyYet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Raised when the client has not connected yet</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Reference</a><ul>
+<li><a class="reference internal" href="#client">Client</a></li>
+<li><a class="reference internal" href="#union-objects">Union Objects</a><ul>
+<li><a class="reference internal" href="#member">Member</a></li>
+<li><a class="reference internal" href="#message">Message</a></li>
+<li><a class="reference internal" href="#id1">Server</a></li>
+<li><a class="reference internal" href="#selfuser">SelfUser</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#exceptions">Exceptions</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to unionchat’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/reference.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Geoffrey Westhoff.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/reference.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
