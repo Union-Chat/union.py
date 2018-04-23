@@ -11,6 +11,7 @@ Current version: 0.0.7
 
 * websockets
 * pyee
+* aiohttp
 
 ## Example
 
@@ -49,11 +50,18 @@ Types:
 ## Functions
 
 ```python
+# Client methods
 await create_message(server, content) # Makes a new message, returns Message object
 get_message(id) # Get a message by ID
 await delete_message(id) # Delete a message by ID, only works on your own messages
+get_member_info(server, id) # Get a member by server and ID
 
-# Message() methods
-await reply(content) # Replies to a message, return Message object
+# Message methods
+await reply(content) # Replies to a message, return Message object, shorthand for create_message()
 await delete() # Deletes message, only works on your own messages
+await send(content) # Alias of reply
+
+# Server methods
+get_member(id) # Gets a member from a server
+
 
